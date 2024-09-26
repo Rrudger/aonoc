@@ -12,14 +12,12 @@ const Offices = () => {
         {t('offices_card.main_title')}
       </h1>
       <OfficeCard city='Certaldo' />
+      <OfficeCard city='Empoli' />
+      <OfficeCard city='Castelfiorentino' />
 
    </div>
   )
 
-  return (<>
-    <OfficeCard city='Empoli' />
-    <OfficeCard city='Castelfiorentino' />
-  </>)
 };
 
 export default Offices;

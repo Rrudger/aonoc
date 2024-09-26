@@ -1,9 +1,18 @@
 import { useEffect, useState } from 'react';
-import { fill, uniqueId } from 'lodash';
+import { fill, toLower, uniqueId } from 'lodash';
+import classNames from 'classnames';
+import Schedule from './Schedule.jsx';
+import { getOccDates } from '../utils/utils.js';
 
-const Calendar = ({ city }) => {
-
-
+const Calendar = ({
+  city,
+  dateNow,
+  date, setDate,
+  month, setMonth,
+  year, setYear,
+  hours, setHours,
+  minutes, setMinutes,
+}) => {
   const getFirstMonday = (firstDay) => {
     if (firstDay === 1) return 1;
     if (firstDay === 0) return 2;
@@ -11,11 +20,13 @@ const Calendar = ({ city }) => {
   };
 
   const maxMonths = 3;
-  const dateNow = new Date();
-  const [date, setDate] = useState(dateNow.getDate());
-  const [year, setYear] = useState(dateNow.getFullYear());
-  const [month, setMonth] = useState(dateNow.getMonth());
+  const occDates = getOccDates(year, month, toLower(city));
+
+  const currentDate = dateNow.getDate();
+
   const addMonth = () => {
+    setDate(null);
+    setHours(null);
     if (month + 1 === 12) {
       setMonth(0);
       setYear(year + 1);
@@ -24,6 +35,8 @@ const Calendar = ({ city }) => {
     }
   };
   const subMonth = () => {
+    setDate(null);
+    setHours(null);
     if (month === 0) {
       setMonth(11);
       setYear(year - 1);
@@ -55,14 +68,13 @@ const Calendar = ({ city }) => {
   const weeksNum = Math.ceil(getWeeksNum());
 
   const bookDate =  (e) => {
-    console.log(e.target.textContent)
-    if (e.target.textContent !== ' ') {
-      setDate(e.target.textContent);
-
-
-    }
-    console.log(`${date}/${month}/${year}`)
+    e.preventDefault();
+    const tD = e.target;
+    if (!tD.classList.contains('disabled_td')) {
+      setDate(Number(tD.textContent));
+    };
   }
+
 
   const FirstWeek = () => {
     const firstWeekDay = firstDate.getDay();
@@ -71,12 +83,24 @@ const Calendar = ({ city }) => {
     //tDs.push(fill(new Array(7 - occTds), <td key=''> </td>));
     for (let i=0; i<7-occTds; i++) {
       tDs.push(
-        <td key={`free_day_${i}`}> </td>
+        <td className='disabled_td' key={`free_day_${i}`}> </td>
       )
     }
     for (let i=0, n = 1; i < occTds; i++, n++) {
+      const activeDate = n >= currentDate || month !== dateNow.getMonth();
+      const day = new Date(year, month, n).getDay();
+      const tdClass = classNames({
+        'text-center': true,
+        'selected_td': n === date,
+      	'disabled_td': !activeDate || [0,6].includes(day) || occDates.includes(day),
+      	'cursor-pointer': activeDate && ![0,6].includes(day),
+      });
       tDs.push(
-        <td key={`day_${n}`} onClick={bookDate} className='cursor-pointer'>
+        <td
+          key={`day_${n}`}
+          onClick={bookDate}
+          className={tdClass}
+            >
           {n}
         </td>)
     }
@@ -85,12 +109,20 @@ const Calendar = ({ city }) => {
     )
   };
   const Week = ({ monday }) => {
+
     const tDs = [];
     for (let i=0, n = monday; i < 7; i++, n++) {
-      const occCell = n<=daysNum ? true : false;
+      const occCell = n<=daysNum;
+      const activeDate = n >= currentDate || month !== dateNow.getMonth();
+      const tdClass = classNames({
+        'text-center': true,
+        'selected_td': n === date,
+      	'disabled_td': !occCell || !activeDate || [5,6].includes(i) || occDates.includes(n),
+      	'cursor-pointer': occCell && activeDate && ![5,6].includes(i),
+      });
       tDs.push(
         <td
-          className={occCell ? 'cursor-pointer' : ''}
+          className={tdClass}
           onClick={bookDate}
           key={uniqueId('occ_')}>
           {occCell ? n : ' '}
@@ -103,8 +135,9 @@ const Calendar = ({ city }) => {
   const monthName = new Date(year, month).toLocaleString('default', { month: 'long' });
 
   return (
-    <div className='h-full my-2'>
-      <div className='flex flex-row justify-between'>
+    <div className='flex md:flex-row flex-col md:items-start items-center'>
+    <div className='md:w-80 w-72 h-full my-2'>
+      <div className='flex flex-row justify-between my-2'>
         <button
           className='calendar_btn'
           disabled={month === dateNow.getMonth()}
@@ -121,7 +154,7 @@ const Calendar = ({ city }) => {
           {'>'}
         </button>
       </div>
-      <table className='w-full table-fixed'>
+      <table className='w-full table-fixed my-2'>
         <thead>
           <tr>
             {["M", "T", "W", "T", "F", "S", "S"].map((day) =>
@@ -138,6 +171,20 @@ const Calendar = ({ city }) => {
             )}
         </tbody>
       </table>
+    </div>
+    <div className={date ? 'schedule' : 'hidden'}>
+      <Schedule
+        city={city}
+        dateNow={dateNow}
+        date={date}
+        month={month}
+        year={year}
+        hours={hours}
+        setHours={setHours}
+        minutes={minutes}
+        setMinutes={setMinutes}
+      />
+    </div>
     </div>
   )
 };

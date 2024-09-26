@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import ProjectCard from './ProjectCard.jsx';
 import Pagination from './Pagination.jsx';
 
-const Projects = () => {
+const Projects = ({ switchPage }) => {
   const projectsCount = 4;
   const projectsOnPage = 3;
   const projectsArray = [1,2,3,4];
@@ -19,6 +19,7 @@ const Projects = () => {
       {projectsArray
         .slice(fIndex, lIndex)
         .map((num) => <ProjectCard
+          switchPage={switchPage}
           id={num}
           key={num}
         />)}

@@ -9,7 +9,7 @@ import { Navigation, Pagination, Mousewheel, Keyboard, Autoplay } from 'swiper/m
 import i18n from '../i18n';
 import { useTranslation } from "react-i18next";
 
-const Carousel = () => {
+const Carousel = ({ switchPage }) => {
   const { t } = useTranslation();
 
   const bgImage = (fileName) => {
@@ -36,12 +36,20 @@ const Carousel = () => {
         className="mySwiper"
       >
       {[1,2,3,4].map((num) =>
-        <SwiperSlide key={num} className="flex-col justify-between" style={bgImage(`photo_${num}.jpg`)}>
+        <SwiperSlide
+          key={num}
+          className="flex-col justify-between"
+          style={bgImage(`photo_${num}.jpg`)}
+          >
         <div className='flex justify-start'>
-          <h4 className={`mx-3 mt-3 p-1
+          <h4 className={`
+            mx-3 mt-3 p-1
             shadow-lg bg-secondary opacity-75
+            cursor-pointer
             rounded
-            md:text-lg text-sm text-dark`}>
+            md:text-lg text-sm text-dark`}
+            onClick={()=>switchPage(`project_${num}`)}
+            >
             {t(`projects.project_${num}.title`)}
           </h4>
         </div>

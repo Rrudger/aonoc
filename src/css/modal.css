@@ -1,6 +1,19 @@
 .calendar_btn:disabled {
   color: #c4ced6;
+}
+
+.disabled_td {
+  color: #c4ced6;
   cursor: default;
+}
+
+.selected_td {
+  color: #bb2649;
+}
+
+.book_btn:disabled {
+  color: #c4ced6;
+  border-color: #c4ced6;
 }
 
 dialog[open] {

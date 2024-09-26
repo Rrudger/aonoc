@@ -2,7 +2,7 @@ import Card from './Card.jsx';
 import i18n from '../i18n';
 import { useTranslation } from "react-i18next";
 
-const Cards = () => {
+const Cards = ({ switchPage }) => {
   const { t } = useTranslation();
 
   return (
@@ -12,12 +12,16 @@ const Cards = () => {
       lg:px-0 md:px-4 px-0 lg:mb-10
       `}>
       <Card
+        switchPage={switchPage}
+        page='projects'
         title={t('projects_card.main_title')}
         text={t('projects_card.main_text')}
         imgFile={'./assets/project.png'}
         bgFile={'./assets/bg-projects.jpg'}
         />
       <Card
+        switchPage={switchPage}
+        page='offices'
         title={t('offices_card.main_title')}
         text={t('offices_card.main_text')}
         imgFile={'./assets/clock.png'}

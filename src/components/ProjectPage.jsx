@@ -5,9 +5,8 @@ import ArrowIcon from '../icons/graph-up-arrow.svg';
 import TextIcon from '../icons/text-left.svg';
 import ContactsIcon from '../icons/person-lines-fill.svg';
 
-const ProjectPage = () => {
+const ProjectPage = ({ id, switchPage }) => {
   const { t } = useTranslation();
-  const id = 1;
 
   const goals = t(`projects.project_${id}.goals`).split(',');
 

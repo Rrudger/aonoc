@@ -2,7 +2,7 @@ import i18n from '../i18n';
 import { useTranslation } from "react-i18next";
 import { uniqueId } from 'lodash';
 
-const ProjectCard = ({ id }) => {
+const ProjectCard = ({ id, switchPage }) => {
   const { t } = useTranslation();
 
   const goals = t(`projects.project_${id}.goals`).split(',');
@@ -34,7 +34,9 @@ const ProjectCard = ({ id }) => {
                 {t(`projects.project_${id}.summary`)}
               </div>
             </div>
-            <button className={`
+            <button
+              onClick={()=>switchPage(`project_${id}`)}
+              className={`
               p-1 my-2 sm:w-1/6 w-2/6 self-end
               rounded-lg border-2 border-primary bg-secondary
               text-primary

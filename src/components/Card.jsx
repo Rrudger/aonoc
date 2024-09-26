@@ -1,4 +1,4 @@
-const Card = ({ title, text, imgFile, bgFile }) => {
+const Card = ({ switchPage, page, title, text, imgFile, bgFile }) => {
   const bgImage = (fileName) => {
     return {
       backgroundImage: `url("${fileName}")`,
@@ -9,7 +9,7 @@ const Card = ({ title, text, imgFile, bgFile }) => {
   };
 
   return (
-    <div className='relative sm:mb-0 mb-6 cursor-pointer'>
+    <div onClick={()=>switchPage(page)} className='relative sm:mb-0 mb-6 cursor-pointer'>
   <div style={bgImage(bgFile)} className={`rounded-lg w-full h-full inset-0
     absolute grayscale
     `}>
