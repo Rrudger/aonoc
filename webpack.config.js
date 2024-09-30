@@ -31,7 +31,7 @@ const config = {
       patterns: [
         {
         from: 'public/assets',
-          to: 'images'
+          to: 'assets'
         }
       ],
     }),
