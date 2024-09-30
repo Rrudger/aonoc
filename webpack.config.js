@@ -2,6 +2,7 @@
 
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const isProduction = process.env.NODE_ENV == 'production';
@@ -25,7 +26,15 @@ const config = {
         host: 'localhost',
     },
     plugins: [
-      new HtmlWebpackPlugin({ template: './public/index.html'})
+      new HtmlWebpackPlugin({ template: './public/index.html'}),
+      new CopyPlugin({
+      patterns: [
+        {
+        from: 'public/assets',
+          to: 'images'
+        }
+      ],
+    }),
     ],
     module: {
         rules: [
